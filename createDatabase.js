@@ -118,56 +118,58 @@ const db = new sqlite3.Database('commands.db');
 
 const posts = [
     {
-        title: 'Команда gzip',
+        title: 'Ubuntu 24.04',
         description: `
-     
-Команда "gzip" в Linux используется для сжатия файлов с целью экономии места на диске или ускорения передачи файлов по сети. Она работает путем сжатия содержимого файла, делая его более компактным. Вот примеры использования команды "gzip":
+Далее вы можете выбрать что устанавливать или нет, тут все индивидуально и зависит от ваших предпочтений. Например, вы можете не удалять Firefox который поставляется в snap пакете, а установить другой браузер и работать в нем.
+Обновляем списки пакетов:
 
-Сжатие файла:
+sudo apt update 
         
-gzip file.txt
+Подключаем 32 битные пакеты и выполняем обновление списков пакетов и системы:
+
+sudo dpkg --add-architecture i386 && sudo apt update && sudo apt dist-upgrade -y
         
-Эта команда сожмет файл "file.txt" и создаст сжатый файл "file.txt.gz".
+Обновляем snap пакеты:
+
+sudo snap refresh
         
-Распаковка сжатого файла:
+Удаляем snap версию Firefox и ставим deb:
+
+sudo snap remove firefox
+sudo install -d -m 0755 /etc/apt/keyrings
         
-gzip -d file.txt.gz
+wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
         
-Этот пример распакует сжатый файл "file.txt.gz" в исходный файл "file.txt".
+echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
         
-Сжатие нескольких файлов:
+sudo nano /etc/apt/preferences.d/mozilla
         
-gzip file1.txt file2.txt
+Package: *
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
         
-Эта команда сжимает несколько файлов одновременно.
         
-Распаковка с сохранением сжатого файла:
+sudo apt update && sudo apt install firefox firefox-l10n-ru
         
-gzip -dk file.txt.gz
+Подключаем мультимедиа:
+sudo apt install ubuntu-restricted-extras  -y
         
-Этот пример распакует файл "file.txt.gz" и оставит оригинал без удаления.
+Устанавливаем архиваторы:
+
+sudo apt install p7zip-rar rar unrar unace arj cabextract -y
         
-Сжатие рекурсивно в каталоге:
+Подключаем репозиторий для NVIDIA:
+
+sudo add-apt-repository ppa:graphics-drivers/ppa -y && sudo apt update
         
-gzip -r directory/
+ubuntu-drivers devices
         
-Этот выход будет сжимать все файлы в указанном каталоге и его подкаталогах.
+Устанавливаем дополнительные утилиты для кастомизации:
+sudo apt install gnome-tweaks -y
+sudo apt install chrome-gnome-shell
+sudo apt install gnome-shell-extensions
+sudo apt install gnome-shell-extension-manager
         
-Проверка сжатия без изменения файла:
-        
-gzip -t file.txt.gz
-        
-Эта команда проверит целостность и сжатие файла "file.txt.gz".
-        
-Отображение информации о сжатом файле:
-        
-gzip -l file.txt.gz
-        
-Этот пример покажет информацию о сжатом файле, включая его размер и коэффициент сжатия.
-        
-Команда "gzip" позволяет сжимать и распаковывать файлы для оптимизации использования дискового пространства и ускорения передачи данных. Использование этой команды полезно в администрировании систем и обмене файлами, особенно если необходимо работать с большими объемами данных.
-        
-                                                         
         `
     },
     // Можете добавить другие посты здесь, если нужно
