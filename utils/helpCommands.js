@@ -37,7 +37,7 @@ function botAction(bot) {
         try {
             const [_, direction, pageNumber] = ctx.match;
             const newPageNumber = direction === 'prev' ? parseInt(pageNumber, 10) - 1 : parseInt(pageNumber, 10) + 1;
-            ctx.answerCbQuery(); // Remove the button highlight
+            ctx.answerCbQuery();
             displayHelpText(ctx, newPageNumber);
         } catch (error) {
             console.error(`Error in botAction function: ${error.message}`);
