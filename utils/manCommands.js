@@ -14,10 +14,10 @@ function displayManText(ctx, pageNumber) {
 
         const buttons = [];
         if (pageNumber > 1) {
-            buttons.push(Markup.button.callback('<<<', `prev_${pageNumber}`));
+            buttons.push(Markup.button.callback('<<<', `prev_man_${pageNumber}`));
         }
         if (pageNumber < maxPages) {
-            buttons.push(Markup.button.callback('>>>', `next_${pageNumber}`));
+            buttons.push(Markup.button.callback('>>>', `next_man_${pageNumber}`));
         }
 
         const keyboard = Markup.inlineKeyboard(buttons);
@@ -32,24 +32,22 @@ function displayManText(ctx, pageNumber) {
     }
 }
 
-function botAction(bot) {
-    bot.action(/^(prev|next)_(\d+)$/, (ctx) => {
+function botActionMan(bot) {
+    bot.action(/^(prev|next)_man_(\d+)$/, (ctx) => {
         try {
             const [_, direction, pageNumber] = ctx.match;
             const newPageNumber = direction === 'prev' ? parseInt(pageNumber, 10) - 1 : parseInt(pageNumber, 10) + 1;
             ctx.answerCbQuery(); 
             displayManText(ctx, newPageNumber);
         } catch (error) {
-            console.error(`Ошибка в функции botAction: ${error.message}`);
-            fs.writeFile('error.log', `Ошибка в функции botAction: ${error.message}\n`, { flag: 'a' }, (err) => {
+            console.error(`Error in botActionMan function: ${error.message}`);
+            fs.writeFile('error.log', `Error in botActionMan function: ${error.message}\n`, { flag: 'a' }, (err) => {
                 if (err) {
-                    console.error(`Ошибка при записи в error.log: ${err.message}`);
+                    console.error(`Error writing to error.log: ${err.message}`);
                 }
             });
         }
     });
 }
 
-
-module.exports = { displayManText, botAction };
-
+module.exports = { displayManText, botActionMan };

@@ -14,10 +14,10 @@ function displayHelpText(ctx, pageNumber) {
 
         const buttons = [];
         if (pageNumber > 1) {
-            buttons.push(Markup.button.callback('<<<', `prev_${pageNumber}`));
+            buttons.push(Markup.button.callback('<<<', `prev_help_${pageNumber}`));
         }
         if (pageNumber < maxPages) {
-            buttons.push(Markup.button.callback('>>>', `next_${pageNumber}`));
+            buttons.push(Markup.button.callback('>>>', `next_help_${pageNumber}`));
         }
 
         const keyboard = Markup.inlineKeyboard(buttons);
@@ -32,16 +32,16 @@ function displayHelpText(ctx, pageNumber) {
     }
 }
 
-function botAction(bot) {
-    bot.action(/^(prev|next)_(\d+)$/, (ctx) => {
+function botActionHelp(bot) {
+    bot.action(/^(prev|next)_help_(\d+)$/, (ctx) => {
         try {
             const [_, direction, pageNumber] = ctx.match;
             const newPageNumber = direction === 'prev' ? parseInt(pageNumber, 10) - 1 : parseInt(pageNumber, 10) + 1;
-            ctx.answerCbQuery();
+            ctx.answerCbQuery(); 
             displayHelpText(ctx, newPageNumber);
         } catch (error) {
-            console.error(`Error in botAction function: ${error.message}`);
-            fs.writeFile('error.log', `Error in botAction function: ${error.message}\n`, { flag: 'a' }, (err) => {
+            console.error(`Error in botActionHelp function: ${error.message}`);
+            fs.writeFile('error.log', `Error in botActionHelp function: ${error.message}\n`, { flag: 'a' }, (err) => {
                 if (err) {
                     console.error(`Error writing to error.log: ${err.message}`);
                 }
@@ -50,4 +50,4 @@ function botAction(bot) {
     });
 }
 
-module.exports = { displayHelpText, botAction };
+module.exports = { displayHelpText, botActionHelp };
